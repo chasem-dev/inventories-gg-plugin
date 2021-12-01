@@ -1,0 +1,4 @@
+name: Inventories.gg
+version: ${project.version}
+main: gg.inventories.InventoriesPlugin
+api-version: 1.17
