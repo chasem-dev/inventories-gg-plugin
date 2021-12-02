@@ -114,7 +114,17 @@ public final class InventoriesPlugin extends JavaPlugin {
             inventoryJson.add(itemNbtToJson(slot));
         }
 
-        sendUpdateRequest(player.getUniqueId().toString(), player.getName(), inventoryJson);
+        JsonArray enderInventoryJson = new JsonArray();
+
+        for (int i = 0; i < player.getEnderChest().getContents().length; i++) {
+            ItemStack item = player.getEnderChest().getContents()[i];
+            NBTTagCompound info = getItemInfo(item);
+            info.setInt("slot", i);
+            enderInventoryJson.add(itemNbtToJson(info));
+        }
+
+
+        sendUpdateRequest(player.getUniqueId().toString(), player.getName(), inventoryJson, enderInventoryJson);
         System.out.println("Synced.\r\n\r\n");
     }
 
@@ -135,13 +145,14 @@ public final class InventoriesPlugin extends JavaPlugin {
         return  jsonObject;
     }
 
-    public void sendUpdateRequest(String uuid, String username, JsonArray value) {
+    public void sendUpdateRequest(String uuid, String username, JsonArray playerInventoryJson, JsonArray endInventoryJson) {
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("UUID", uuid);
         jsonObject.addProperty("Username", username);
-        jsonObject.add("Inventory", value);
+        jsonObject.add("Inventory", playerInventoryJson);
+        jsonObject.add("EnderInventory", endInventoryJson);
 
         HttpClient httpClient = HttpClientBuilder.create().build();
 
@@ -165,22 +176,6 @@ public final class InventoriesPlugin extends JavaPlugin {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("Name", Bukkit.getServer().getName());
         jsonObject.addProperty("MOTD", Bukkit.getServer().getMotd());
-
-//        HttpClient httpClient = HttpClientBuilder.create().build();
-//        try {
-//            String postUrl = API_URL + "/sync/server";
-//            System.out.println(postUrl);
-//            HttpPost post = new HttpPost(postUrl);
-//            StringEntity postingString = new StringEntity(jsonObject.toString()); //convert to json
-//            System.out.println(postingString);
-//            post.setEntity(postingString);
-//            post.setHeader("Content-type", "application/json");
-//            post.setHeader("Authorization", Base64.getEncoder().encodeToString(getClientSecret().getBytes(StandardCharsets.UTF_8)));
-//            HttpResponse response = httpClient.execute(post);
-//            System.out.println(response.getStatusLine().getStatusCode());
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
     }
 
     public NBTTagCompound getItemInfo(ItemStack item) {
