@@ -1,0 +1,6 @@
+name: Inventories
+version: ${project.version}
+main: gg.inventories.InventoriesMain
+api-version: 1.18
+description: Chases Inventories plugin
+website: inventories.gg
