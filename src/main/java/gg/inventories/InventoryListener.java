@@ -9,11 +9,11 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        InventoriesMain.getInstance().syncPlayer(event.getPlayer());
+        Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(InventoriesMain.getInstance(), () -> InventoriesMain.getInstance().syncPlayer(event.getPlayer()));
     }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
-        InventoriesMain.getInstance().syncPlayer(event.getPlayer());
+        Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(InventoriesMain.getInstance(), () -> InventoriesMain.getInstance().syncPlayer(event.getPlayer()));
     }
 }
