@@ -46,7 +46,7 @@ public final class InventoriesMain extends JavaPlugin {
                 return;
             }
         } else {
-            System.out.println("Client Secret not null: " + getClientSecret());
+            this.getLogger().warning("Client Secret not null: " + getClientSecret());
         }
 
         this.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
@@ -80,8 +80,22 @@ public final class InventoriesMain extends JavaPlugin {
     }
 
     public void syncPlayer(Player player) {
-        System.out.println("Syncing Player: " + player.getName());
-        System.out.println("Armor:");
+        this.getLogger().info("Syncing player " + player.getName() + ".");
+
+        JsonObject playerInfo = new JsonObject();
+
+        playerInfo.addProperty("uuid", player.getUniqueId().toString());
+        playerInfo.addProperty("username", player.getName());
+        playerInfo.addProperty("displayName", player.getDisplayName());
+        playerInfo.addProperty("ping", player.getPing());
+
+        playerInfo.addProperty("level", player.getLevel());
+        playerInfo.addProperty("exp", player.getExp());
+        playerInfo.addProperty("totalExp", player.getTotalExperience());
+        playerInfo.addProperty("expToLevel", player.getExpToLevel());
+
+        playerInfo.addProperty("health", player.getHealth());
+        playerInfo.addProperty("hunger", player.getFoodLevel());
 
         JsonArray inventoryJson = new JsonArray();
 
@@ -94,8 +108,8 @@ public final class InventoriesMain extends JavaPlugin {
                 inventoryJson.add(this.airJson);
             }
         }
+        this.getLogger().info("Armor of " + player.getName() + " logged.");
 
-        System.out.println("Inventory:");
         for (int i = 0; i < player.getInventory().getContents().length; i++) {
             ItemStack item = player.getInventory().getContents()[i];
 
@@ -105,6 +119,14 @@ public final class InventoriesMain extends JavaPlugin {
                 inventoryJson.add(this.airJson);
             }
         }
+        this.getLogger().info("Inventory of " + player.getName() + " logged.");
+
+        if (player.getInventory().getItemInOffHand().getType() != Material.AIR) {
+            inventoryJson.add(SpigotItemToJson.toJson(player.getInventory().getItemInOffHand()));
+        } else {
+            inventoryJson.add(this.airJson);
+        }
+        this.getLogger().info("Offhand of " + player.getName() + " logged.");
 
         JsonArray enderInventoryJson = new JsonArray();
 
@@ -117,41 +139,33 @@ public final class InventoriesMain extends JavaPlugin {
                 enderInventoryJson.add(this.airJson);
             }
         }
+        this.getLogger().info("Enderchest of " + player.getName() + " logged.");
 
+        playerInfo.add("inventory", inventoryJson);
 
-        this.sendUpdateRequest(player.getUniqueId().toString(), player.getName(), inventoryJson, enderInventoryJson);
-        System.out.println("Synced.\r\n\r\n");
+        playerInfo.add("enderChest", enderInventoryJson);
+
+        this.sendUpdateRequest(playerInfo);
     }
 
-    public void sendUpdateRequest(String uuid, String username, JsonArray playerInventoryJson, JsonArray endInventoryJson) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("UUID", uuid);
-        jsonObject.addProperty("Username", username);
-        jsonObject.add("Inventory", playerInventoryJson);
-        jsonObject.add("EnderInventory", endInventoryJson);
-
+    public void sendUpdateRequest(JsonObject playerData) {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
         try {
             String postUrl = apiUrl + "/sync";
-            System.out.println(postUrl);
+
             HttpPost post = new HttpPost(postUrl);
-            StringEntity postingString = new StringEntity(jsonObject.toString()); //convert to json
-            System.out.println(postingString);
-            post.setEntity(postingString);
+            post.setHeader("Accept-Encoding", "UTF-8");
             post.setHeader("Content-type", "application/json");
             post.setHeader("Authorization", Base64.getEncoder().encodeToString(getClientSecret().getBytes(StandardCharsets.UTF_8)));
-            HttpResponse response = httpClient.execute(post);
-            System.out.println(response.getStatusLine().getStatusCode());
+
+            StringEntity postingString = new StringEntity(playerData.toString(), "UTF-8"); //convert to json
+            post.setEntity(postingString);
+
+            httpClient.execute(post);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    public void sendHandshake() {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("Name", Bukkit.getServer().getName());
-        jsonObject.addProperty("MOTD", Bukkit.getServer().getMotd());
     }
 
     public static InventoriesMain getInstance() {
