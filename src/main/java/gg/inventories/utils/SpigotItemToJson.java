@@ -28,6 +28,11 @@ public class SpigotItemToJson {
 
         if (stack.getDurability() > 0) {
             itemJson.addProperty("data", stack.getDurability());
+            itemJson.addProperty("durability", stack.getDurability());
+        }
+
+        if (stack.getType().getMaxDurability() > 0) {
+            itemJson.addProperty("maxDurability", stack.getType().getMaxDurability());
         }
 
         if (stack.getAmount() != 1) {
