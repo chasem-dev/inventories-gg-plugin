@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 public class InventoriesCore {
     private static String CLIENT_SECRET = null;
-        public static String API_URL = "http://localhost:3000/api";
-//    public static String API_URL = "https://inventories-gg.vercel.app/api";
+//        public static String API_URL = "http://localhost:3000/api";
+    public static String API_URL = "https://inventories-gg.vercel.app/api";
 
     public static Logger getLogger() {
         return Logger.getLogger("InventoriesCore");
