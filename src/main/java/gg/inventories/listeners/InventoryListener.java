@@ -1,6 +1,7 @@
 package gg.inventories.listeners;
 
-import gg.inventories.InventoriesPlugin;
+import gg.inventories.spigot.InventoriesSpigot;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -10,12 +11,12 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        InventoriesPlugin.getInstance().syncPlayer(event.getPlayer());
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(InventoriesSpigot.getInstance(), () -> InventoriesSpigot.getInstance().syncPlayer(event.getPlayer()), 20);
     }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
-        InventoriesPlugin.getInstance().syncPlayer(event.getPlayer());
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(InventoriesSpigot.getInstance(), () -> InventoriesSpigot.getInstance().syncPlayer(event.getPlayer()), 20);
     }
 
 
