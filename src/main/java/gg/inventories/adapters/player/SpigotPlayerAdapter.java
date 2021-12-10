@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import gg.inventories.InventoriesCore;
 import gg.inventories.adapters.items.SpigotItemAdapter;
+import gg.inventories.spigot.InventoriesSpigot;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -49,7 +50,7 @@ public class SpigotPlayerAdapter extends PlayerAdapter<Player, SpigotItemAdapter
                 inventoryJson.add(airJson);
             }
         }
-        InventoriesCore.getLogger().info("Armor of " + player.getName() + " logged.");
+        InventoriesCore.getLogger().fine("Armor of " + player.getName() + " logged.");
 
         for (int i = 0; i < player.getInventory().getContents().length; i++) {
             ItemStack item = player.getInventory().getContents()[i];
@@ -60,14 +61,14 @@ public class SpigotPlayerAdapter extends PlayerAdapter<Player, SpigotItemAdapter
                 inventoryJson.add(airJson);
             }
         }
-        InventoriesCore.getLogger().info("Inventory of " + player.getName() + " logged.");
+        InventoriesCore.getLogger().fine("Inventory of " + player.getName() + " logged.");
 
         if (player.getInventory().getItemInOffHand().getType() != Material.AIR) {
             inventoryJson.add(getItemAdapter().toJson(player.getInventory().getItemInOffHand()));
         } else {
             inventoryJson.add(airJson);
         }
-        InventoriesCore.getLogger().info("Offhand of " + player.getName() + " logged.");
+        InventoriesCore.getLogger().fine("Offhand of " + player.getName() + " logged.");
 
         JsonArray enderInventoryJson = new JsonArray();
 
@@ -80,12 +81,12 @@ public class SpigotPlayerAdapter extends PlayerAdapter<Player, SpigotItemAdapter
                 enderInventoryJson.add(this.airJson);
             }
         }
-        InventoriesCore.getLogger().info("Enderchest of " + player.getName() + " logged.");
+        InventoriesCore.getLogger().fine("Enderchest of " + player.getName() + " logged.");
 
         playerInfo.add("inventory", inventoryJson);
 
         playerInfo.add("enderChest", enderInventoryJson);
-
+        InventoriesCore.getLogger().info("Syncing " + player.getName());
         return playerInfo;
     }
 
