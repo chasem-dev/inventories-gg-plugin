@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class InventoriesCore {
     private static String CLIENT_SECRET = null;
-//        public static String API_URL = "http://localhost:3000/api";
+    //        public static String API_URL = "http://localhost:3000/api";
     public static String API_URL = "https://inventories-gg.vercel.app/api";
 
     public static Logger getLogger() {
@@ -24,7 +24,7 @@ public class InventoriesCore {
     }
 
     public static void sendUpdateRequest(JsonObject playerData) {
-        if(CLIENT_SECRET == null){
+        if (CLIENT_SECRET == null) {
             getLogger().warning("Failed to send Inventory Update Request, no Client Secret provided.");
             return;
         }
