@@ -1,4 +1,4 @@
 name: Inventories.gg
 version: ${project.version}
-main: gg.inventories.InventoriesPlugin
+main: gg.inventories.spigot.InventoriesSpigot
 api-version: 1.17
