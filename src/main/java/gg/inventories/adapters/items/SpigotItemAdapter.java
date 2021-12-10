@@ -27,12 +27,12 @@ public class SpigotItemAdapter extends ItemAdapter<ItemStack> {
 
         if (stack.getDurability() > 0) {
             itemJson.addProperty("data", stack.getDurability());
+            itemJson.addProperty("durability", stack.getDurability());
         }
 
-        if (stack.getAmount() != 1) {
-            itemJson.addProperty("amount", stack.getAmount());
+        if (stack.getType().getMaxDurability() > 0) {
+            itemJson.addProperty("maxDurability", stack.getType().getMaxDurability());
         }
-
         if (stack.hasItemMeta()) {
             JsonObject metaJson = new JsonObject();
 
