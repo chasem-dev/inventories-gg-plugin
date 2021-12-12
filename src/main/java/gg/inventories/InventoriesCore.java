@@ -1,6 +1,7 @@
 package gg.inventories;
 
 import com.google.gson.JsonObject;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -38,7 +39,17 @@ public class InventoriesCore {
             post.setHeader("Authorization", Base64.getEncoder().encodeToString(CLIENT_SECRET.getBytes(StandardCharsets.UTF_8)));
             StringEntity postingString = new StringEntity(playerData.toString(), "UTF-8"); //convert to json
             post.setEntity(postingString);
-            httpClient.execute(post);
+            HttpResponse response = httpClient.execute(post);
+            if(response.getStatusLine().getStatusCode() == 403){
+                getLogger().warning("Trouble syncing playerData, Maximum player count has been reached.");
+            }else if(response.getStatusLine().getStatusCode() == 404){
+                getLogger().warning(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
+                getLogger().warning("No server was found matching your configured clientSecret.");
+                getLogger().warning("Navigate to your dashboard and copy your clientSecret. https://inventories-gg.vercel.app/dashboard");
+            }else if(response.getStatusLine().getStatusCode() != 200){
+                getLogger().warning("Error when syncing playerData.");
+                getLogger().warning(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
