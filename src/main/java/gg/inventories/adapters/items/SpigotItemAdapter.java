@@ -4,10 +4,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.bukkit.Material;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 
 public class SpigotItemAdapter extends ItemAdapter<ItemStack> {
+
+    static JsonObject airJson = new JsonObject();
+
+    static {
+        airJson.addProperty("type", Material.AIR.name());
+        airJson.addProperty("unlocalizedName", Material.AIR.getKey().toString());
+        airJson.addProperty("source", Material.AIR.getKey().toString().split(":")[0]);
+        airJson.addProperty("itemName", Material.AIR.getKey().toString().split(":")[1]);
+    }
 
     @Override
     public JsonObject toJson(ItemStack stack) {
@@ -28,6 +38,10 @@ public class SpigotItemAdapter extends ItemAdapter<ItemStack> {
         if (stack.getDurability() > 0) {
             itemJson.addProperty("data", stack.getDurability());
             itemJson.addProperty("durability", stack.getDurability());
+        }
+
+        if (stack.getAmount() != 1) {
+            itemJson.addProperty("amount", stack.getAmount());
         }
 
         if (stack.getType().getMaxDurability() > 0) {
@@ -156,8 +170,27 @@ public class SpigotItemAdapter extends ItemAdapter<ItemStack> {
 
             } else if (meta instanceof LeatherArmorMeta) {
 
-            }
+            } else if (meta instanceof BlockStateMeta blockStateMeta) {
+                JsonObject blockStateJson = new JsonObject();
 
+                if (blockStateMeta.getBlockState() instanceof ShulkerBox shulkerBox) {
+                    blockStateJson.addProperty("metaType", "SHULKER_BOX");
+
+                    JsonArray shulkerJson = new JsonArray();
+
+                    for (ItemStack itemStack : shulkerBox.getSnapshotInventory().getContents()) {
+                        if (itemStack != null && itemStack.getType() != Material.AIR) { //This might get stuck if its shulker inside of shulker?
+                            shulkerJson.add(this.toJson(itemStack));
+                        } else {
+                            shulkerJson.add(airJson);
+                        }
+                    }
+
+                    blockStateJson.add("inventory", shulkerJson);
+                }
+
+                metaJson.add("extraMeta", blockStateJson);
+            }
             itemJson.add("itemMeta", metaJson);
         }
 

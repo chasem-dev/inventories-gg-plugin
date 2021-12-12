@@ -22,8 +22,6 @@ public class SpigotPlayerAdapter extends PlayerAdapter<Player, SpigotItemAdapter
 
     @Override
     public JsonObject toJson(Player player) {
-        SpigotItemAdapter itemAdapter = getItemAdapter();
-
         JsonObject playerInfo = new JsonObject();
 
         playerInfo.addProperty("uuid", player.getUniqueId().toString());
@@ -45,7 +43,7 @@ public class SpigotPlayerAdapter extends PlayerAdapter<Player, SpigotItemAdapter
             ItemStack item = player.getInventory().getArmorContents()[i];
 
             if (item != null && item.getType() != Material.AIR) {
-                inventoryJson.add(itemAdapter.toJson(item));
+                inventoryJson.add(this.getItemAdapter().toJson(item));
             } else {
                 inventoryJson.add(airJson);
             }
@@ -56,7 +54,7 @@ public class SpigotPlayerAdapter extends PlayerAdapter<Player, SpigotItemAdapter
             ItemStack item = player.getInventory().getContents()[i];
 
             if (item != null) {
-                inventoryJson.add(getItemAdapter().toJson(item));
+                inventoryJson.add(this.getItemAdapter().toJson(item));
             } else {
                 inventoryJson.add(airJson);
             }
@@ -76,9 +74,9 @@ public class SpigotPlayerAdapter extends PlayerAdapter<Player, SpigotItemAdapter
             ItemStack item = player.getEnderChest().getContents()[i];
 
             if (item != null) {
-                enderInventoryJson.add(getItemAdapter().toJson(item));
+                enderInventoryJson.add(this.getItemAdapter().toJson(item));
             } else {
-                enderInventoryJson.add(this.airJson);
+                enderInventoryJson.add(airJson);
             }
         }
         InventoriesCore.getLogger().fine("Enderchest of " + player.getName() + " logged.");
