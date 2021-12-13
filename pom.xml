@@ -54,8 +54,8 @@
 
     <repositories>
         <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>dmulloy2</id>
+            <url>https://repo.dmulloy2.net/repository/public/</url>
         </repository>
         <repository>
             <id>sonatype</id>
