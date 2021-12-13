@@ -3,6 +3,8 @@ package gg.inventories.adapters.items;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import net.minecraft.locale.LocaleLanguage;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.ItemStack;
@@ -195,12 +197,23 @@ public class SpigotItemAdapter extends ItemAdapter<ItemStack> {
         }
 
         if (!itemJson.has("displayName")) {
-            //GRAB DISPLAY NAME FROM GRABBER
-            itemJson.addProperty("displayName", stack.getI18NDisplayName());
+            itemJson.addProperty("displayName", getI18NDisplayName(stack));
         }
 
         //TODO: Item json
 
         return itemJson;
+    }
+
+    /**
+     *
+     * Works for all except (block.minecraft.white_wall_banner)
+     *
+     * @param item
+     * @return
+     */
+    public String getI18NDisplayName(ItemStack item) {
+        String translationKey = (item.getType().isBlock() ? "block." : "item.") + item.getType().getKey().getNamespace() + "." + item.getType().getKey().getKey();
+        return LocaleLanguage.a().a(translationKey);
     }
 }
