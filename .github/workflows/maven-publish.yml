@@ -75,6 +75,5 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: "./target/inventories-1.0-SNAPSHOT.jar"
-        tag: "production"
         name: "Release ${{ github.ref }}"
         token: ${{ secrets.GH_TOKEN }}
