@@ -73,7 +73,7 @@ jobs:
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "/target/inventories-1.0-SNAPSHOT.jar"
+        artifacts: "./target/inventories-1.0-SNAPSHOT.jar"
         tag: "production"
         token: ${{ secrets.GH_TOKEN }}
     - name: Upload Release Asset
@@ -83,7 +83,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
         upload_url: https://github.com/Xwaffle1/inventories-gg-plugin/releases
-        asset_path: /target/inventories-1.0-SNAPSHOT.jar
+        asset_path: "./target/inventories-1.0-SNAPSHOT.jar"
         asset_name: inventories-1.0-SNAPSHOT2.jar
         asset_content_type: application/zip
 
