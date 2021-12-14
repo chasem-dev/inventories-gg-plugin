@@ -67,9 +67,14 @@ jobs:
         buildToolProvider: SpigotMC # Optional
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
+    - name: Generate release tag
+      id: tag
+      run: |
+        echo "::set-output name=release_tag::Build_$(date +"%Y.%m.%d_%H-%M")"      
     - name: Create Release
       uses: softprops/action-gh-release@v1      
       with:
         files: ./target/inventories-1.0-SNAPSHOT.jar
+        tag_name: ${{ steps.tag.outputs.release_tag }}
         token: ${{ secrets.GH_TOKEN }}
         
