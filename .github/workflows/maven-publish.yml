@@ -71,6 +71,7 @@ jobs:
       with:
         artifacts: "/home/runner/work/inventories-gg-plugin/inventories-gg-plugin/target/inventories-1.0-SNAPSHOT.jar"
         bodyFile: "body.md"
+        tag: "production"
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload Release Asset
       id: upload-release-asset 
