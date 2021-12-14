@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>gg.inventories</groupId>
-    <artifactId>Inventories</artifactId>
+    <artifactId>inventories</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Inventories.gg</name>
+    <name>inventories.gg</name>
 
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
+            <name>test</name>
             <url>https://maven.pkg.github.com/Xwaffle1/inventories-gg-plugin</url>
         </repository>
     </distributionManagement>
