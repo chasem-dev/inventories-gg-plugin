@@ -5,8 +5,8 @@ name: CI/CD
 
 on: 
   push:
-    tags:
-    - '*'
+    branches:
+      - master  
   workflow_dispatch:
     inputs:
       version:
@@ -75,5 +75,6 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: "./target/inventories-1.0-SNAPSHOT.jar"
+        tag: "Release ${{ inputs.version }} - ${{ github.ref }}"
         name: "Release ${{ github.ref }}"
         token: ${{ secrets.GH_TOKEN }}
