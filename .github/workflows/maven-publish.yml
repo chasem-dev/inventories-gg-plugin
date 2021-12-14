@@ -70,7 +70,7 @@ jobs:
     - name: Generate release tag
       id: tag
       run: |
-        echo "::set-output name=release_tag::Build_$(date +"%Y.%m.%d_%H-%M")"      
+        echo "::set-output name=release_tag::Inventories - ${{ inputs.version }} - ${{ github.sha }}"      
     - name: Create Release
       uses: softprops/action-gh-release@v1      
       with:
