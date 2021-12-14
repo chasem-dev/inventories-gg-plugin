@@ -67,6 +67,8 @@ jobs:
         buildToolProvider: SpigotMC # Optional
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
+    - name: Rename Maven Jar
+      run: mv ./target/inventories-${project.version}.jar ./target/inventories-${project.version}-spigot.jar
     - name: Get Short Commit Hash
       id: commit_hash
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
@@ -76,11 +78,11 @@ jobs:
     - name: Generate release tag
       id: tag
       run: |
-        echo "::set-output name=release_tag::Inventories_${{ steps.plugin_version.outputs.version }}_${{ steps.commit_hash.outputs.sha_short }}"      
+        echo "::set-output name=release_tag::Inventories_spigot_${{ steps.plugin_version.outputs.version }}_${{ steps.commit_hash.outputs.sha_short }}"
     - name: Create Release
       uses: softprops/action-gh-release@v1      
       with:
-        files: ./target/inventories-1.0-SNAPSHOT.jar
+        files: ./target/inventories-${project.version}-spigot.jar
         tag_name: ${{ steps.tag.outputs.release_tag }}
         token: ${{ secrets.GH_TOKEN }}
         
