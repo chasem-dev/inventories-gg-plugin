@@ -1,7 +1,7 @@
 package gg.inventories.spigot;
 
 import gg.inventories.InventoriesCore;
-import gg.inventories.adapters.player.SpigotPlayerAdapter;
+import gg.inventories.adapters.SpigotPlayerAdapter;
 import gg.inventories.listeners.InventoryListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,6 +12,7 @@ public final class InventoriesSpigot extends JavaPlugin {
 
     private static InventoriesSpigot instance;
     private final SpigotPlayerAdapter playerAdapter = new SpigotPlayerAdapter();
+
     public static InventoriesSpigot getInstance() {
         return instance;
     }
@@ -46,7 +47,6 @@ public final class InventoriesSpigot extends JavaPlugin {
         } else {
             InventoriesCore.setClientSecret(getClientSecret());
         }
-
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
@@ -56,7 +56,7 @@ public final class InventoriesSpigot extends JavaPlugin {
         }, 0, 20l * 60 * 2);
     }
 
-    public void syncPlayer(Player player){
+    public void syncPlayer(Player player) {
         InventoriesCore.sendUpdateRequest(playerAdapter.toJson(player));
     }
 }

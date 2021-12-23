@@ -1,10 +1,10 @@
-package gg.inventories.adapters.items;
+package gg.inventories.adapters;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import gg.inventories.adapters.items.ItemAdapter;
 import net.minecraft.locale.LocaleLanguage;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.ItemStack;

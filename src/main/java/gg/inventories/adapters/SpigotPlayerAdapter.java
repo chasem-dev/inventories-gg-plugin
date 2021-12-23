@@ -1,15 +1,14 @@
-package gg.inventories.adapters.player;
+package gg.inventories.adapters;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import gg.inventories.InventoriesCore;
-import gg.inventories.adapters.items.SpigotItemAdapter;
-import gg.inventories.spigot.InventoriesSpigot;
+import gg.inventories.adapters.player.PlayerAdapter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class SpigotPlayerAdapter extends PlayerAdapter<Player, SpigotItemAdapter>{
+public class SpigotPlayerAdapter extends PlayerAdapter<Player, SpigotItemAdapter> {
 
     static JsonObject airJson = new JsonObject();
 
