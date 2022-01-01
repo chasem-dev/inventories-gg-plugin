@@ -6,7 +6,7 @@
 
     <groupId>gg.inventories</groupId>
     <artifactId>inventories</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1c-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>inventories.gg</name>
 
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>dev.chasem</groupId>
             <artifactId>inventories-core</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.1c-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
